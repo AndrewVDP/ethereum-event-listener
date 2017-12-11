@@ -6,7 +6,7 @@ const Pineapple = contract(pineapple_artifacts);
 let instance;
 const account = '0x161288866b0ae8138ac4e1882bbfa13c0098aa36';
 
-const main = async () => {
+const listener = async () => {
   if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
   } else {
@@ -42,7 +42,5 @@ const fireEvent = () => {
     .catch(error => Promise.reject())
 }
 
-main();
-
 exports.fireEvent = fireEvent;
-exports.main = main;
+exports.listener = listener;

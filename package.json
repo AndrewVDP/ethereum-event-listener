@@ -1,14 +1,14 @@
 {
-  "name": "truffle-init-webpack",
+  "name": "ethereum event listener",
   "version": "0.0.2",
-  "description": "Frontend example using truffle v3",
+  "description": "Service for listening to Ethereum contract events",
   "scripts": {
     "lint": "eslint ./",
     "test": "rm -rf build && truffle compile --all && truffle migrate --reset && truffle test",
     "start": "node server.js"
   },
-  "author": "Douglas von Kohorn",
-  "license": "MIT",
+  "author": "Andrew Van De Poel",
+  "license": "ISC",
   "devDependencies": {
     "eslint": "^3.14.0",
     "eslint-config-standard": "^6.0.0",
@@ -20,6 +20,7 @@
   "dependencies": {
     "babel-register": "^6.26.0",
     "express": "^4.16.2",
+    "servicebus": "^2.0.10",
     "truffle-contract": "^3.0.1",
     "web3": "^1.0.0-beta.24"
   }

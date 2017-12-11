@@ -10,8 +10,9 @@ router.get('/', (req, res, next) => {
 
 app.use(router);
 
-app.listen(3000, function () {
+const port = process.env.PORT || 3000
+app.listen(port, function () {
   main.main();
-  console.log('port 3000');
+  console.log(`listening on port ${port}`);
 });
 
