@@ -3,15 +3,25 @@ const pineapple_artifacts = require('./build/contracts/Pineapple.json')
 const contract = require('truffle-contract');
 const Pineapple = contract(pineapple_artifacts);
 
+const websocketListener = require('./src/websocketListener.js');
+const rabbit = require('./src/rabbitmq');
+const mail = require('./src/mailer');
+
 let instance;
-const account = '0x161288866b0ae8138ac4e1882bbfa13c0098aa36';
+
+const account = '0xc983c906be216b8e9e50af80d33b977c3879335b';
+// const providerUrl = process.env.PROVIDER_URL || 'wss://socket.etherscan.io/wshandler/';
+const providerUrl = process.env.PROVIDER_URL || 'http://localhost:8545';
 
 const listener = async () => {
-  if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
-  } else {
-    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+  rabbit.subscribe('events');
+
+  if(providerUrl.slice(0,1) === 'w') {
+    websocketListener.listen(providerUrl);
+    return;
   }
+
+  const web3 = new Web3(new Web3.providers.HttpProvider(providerUrl));
 
   Pineapple.setProvider(web3.currentProvider);
   if (typeof Pineapple.currentProvider.sendAsync !== "function") {
@@ -27,13 +37,11 @@ const listener = async () => {
 
   pineEvent.watch((error, result) => {
     if(!error) {
+      mail.mail(JSON.stringify(result));
+      rabbit.publish('events', result);
       console.log('result', result);
     }
   })
-
-  await fireEvent();
-
-  console.log('result', result[0], result[1].valueOf());
 }
 
 const fireEvent = () => {

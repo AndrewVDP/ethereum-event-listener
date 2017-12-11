@@ -12,7 +12,7 @@ app.use(router);
 
 const port = process.env.PORT || 3000
 app.listen(port, function () {
-  main.main();
+  main.listener();
   console.log(`listening on port ${port}`);
 });
 
